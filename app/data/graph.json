@@ -1,0 +1,57 @@
+{
+  "nodes": {
+    "73a07b13-9fb0-467f-862e-bff2740e9cef": {
+      "id": "73a07b13-9fb0-467f-862e-bff2740e9cef",
+      "title": "Ancient Rome",
+      "domain": "History",
+      "content": "The Roman Empire was vast.",
+      "tags": [
+        "rome",
+        "empire"
+      ],
+      "sources": [],
+      "created_at": "2026-06-28T01:23:43.917066",
+      "last_visited": "2026-06-28T01:23:43.917163"
+    },
+    "e9ffee00-617f-4242-bd74-734bfa1dfa5c": {
+      "id": "e9ffee00-617f-4242-bd74-734bfa1dfa5c",
+      "title": "Political Systems",
+      "domain": "Political Science",
+      "content": "",
+      "tags": [
+        "politics"
+      ],
+      "sources": [],
+      "created_at": "2026-06-28T01:25:43.256879",
+      "last_visited": "2026-06-28T01:25:43.256888"
+    },
+    "6093583d-83dd-40de-a8bd-05a68fd9d2e7": {
+      "id": "6093583d-83dd-40de-a8bd-05a68fd9d2e7",
+      "title": "UPSC",
+      "domain": "Exam Prep",
+      "content": "",
+      "tags": [
+        "upsc"
+      ],
+      "sources": [],
+      "created_at": "2026-06-28T01:25:49.563771",
+      "last_visited": "2026-06-28T01:25:49.563777"
+    }
+  },
+  "connections": {
+    "1d3fe1f9-6206-439c-ade0-4052311df319": {
+      "id": "1d3fe1f9-6206-439c-ade0-4052311df319",
+      "from_node_id": "73a07b13-9fb0-467f-862e-bff2740e9cef",
+      "to_node_id": "e9ffee00-617f-4242-bd74-734bfa1dfa5c",
+      "label": "influenced",
+      "created_at": "2026-06-28T01:26:39.797285"
+    },
+    "39f6ac2e-e1be-4c84-b3dd-2ba5c12e4e33": {
+      "id": "39f6ac2e-e1be-4c84-b3dd-2ba5c12e4e33",
+      "from_node_id": "e9ffee00-617f-4242-bd74-734bfa1dfa5c",
+      "to_node_id": "6093583d-83dd-40de-a8bd-05a68fd9d2e7",
+      "label": "is part of",
+      "created_at": "2026-06-28T01:26:44.594581"
+    }
+  }
+}
