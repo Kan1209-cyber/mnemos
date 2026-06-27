@@ -1,0 +1,24 @@
+{
+  "habits": {
+    "f77e3bf3-6831-4c8c-9354-74e8284f30a1": {
+      "id": "f77e3bf3-6831-4c8c-9354-74e8284f30a1",
+      "name": "Read 30 mins",
+      "created_at": "2026-06-28T01:09:19.310834"
+    },
+    "70ae0c9f-c85b-4059-bf3a-797db4949e48": {
+      "id": "70ae0c9f-c85b-4059-bf3a-797db4949e48",
+      "name": "Revise notes",
+      "created_at": "2026-06-28T01:09:19.310842"
+    }
+  },
+  "logs": {
+    "2026-06-28": {
+      "date": "2026-06-28",
+      "completed_habits": [
+        "f77e3bf3-6831-4c8c-9354-74e8284f30a1",
+        "70ae0c9f-c85b-4059-bf3a-797db4949e48"
+      ],
+      "summary": "Good day today"
+    }
+  }
+}
