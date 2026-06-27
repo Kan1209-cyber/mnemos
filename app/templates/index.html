@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mnemos</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <div id="app">
+
+        <!-- SIDEBAR -->
+        <div id="sidebar">
+            <div id="logo">MNEMOS</div>
+
+            <nav>
+                <button class="nav-btn active" onclick="showPage('graph')">Graph</button>
+                <button class="nav-btn" onclick="showPage('search')">Search</button>
+                <button class="nav-btn" onclick="showPage('tracker')">Tracker</button>
+            </nav>
+
+            <div id="heatmap-section">
+                <div class="section-title">Domain Map</div>
+                <div id="heatmap"></div>
+            </div>
+
+            <div id="sidebar-bottom">
+                <button id="random-btn" onclick="randomNode()">⚡ Surprise Me</button>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div id="main">
+
+            <!-- GRAPH PAGE -->
+            <div id="page-graph" class="page active">
+                <div id="graph-container">
+                    <svg id="graph-svg"></svg>
+                </div>
+                <div id="thought-capture">
+                    <input type="text" id="thought-input" placeholder="Capture a thought... (press Enter)" />
+                </div>
+            </div>
+
+            <!-- SEARCH PAGE -->
+            <div id="page-search" class="page">
+                <div class="page-inner">
+                    <h2>Search</h2>
+                    <input type="text" id="search-input" placeholder="Search by title, tag, or content..." oninput="doSearch()" />
+                    <div id="search-results"></div>
+                </div>
+            </div>
+
+            <!-- TRACKER PAGE -->
+            <div id="page-tracker" class="page">
+                <div class="page-inner">
+                    <h2>Daily Tracker</h2>
+                    <div id="habits-list"></div>
+                    <div id="add-habit">
+                        <input type="text" id="new-habit-input" placeholder="Add a new habit..." />
+                        <button onclick="addHabit()">Add</button>
+                    </div>
+                    <div id="summary-section">
+                        <textarea id="summary-input" placeholder="Today's summary..."></textarea>
+                        <button onclick="logToday()">Save Today</button>
+                    </div>
+                    <div id="streaks"></div>
+                </div>
+            </div>
+
+            <!-- NODE DETAIL MODAL -->
+            <div id="modal" class="hidden">
+                <div id="modal-content">
+                    <button id="modal-close" onclick="closeModal()">✕</button>
+                    <div id="modal-body"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/graph.js"></script>
+</body>
+</html>

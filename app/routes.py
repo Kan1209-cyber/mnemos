@@ -1,7 +1,11 @@
 from flask import Blueprint, jsonify, request
 from . import storage, habit_tracker
+from flask import render_template
 
 main = Blueprint("main", __name__)
+@main.route("/")
+def index():
+    return render_template("index.html")
 
 graph = storage.load()
 
