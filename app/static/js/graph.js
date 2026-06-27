@@ -1,3 +1,21 @@
+// ── CONNECT MODE ──
+let connectMode = false;
+let connectFirstNode = null;
+
+function toggleConnectMode() {
+    connectMode = !connectMode;
+    connectFirstNode = null;
+    const btn = document.getElementById('connect-btn');
+    const status = document.getElementById('connect-status');
+    if (connectMode) {
+        btn.classList.add('active');
+        status.textContent = 'Click first node...';
+    } else {
+        btn.classList.remove('active');
+        status.textContent = '';
+    }
+}
+
 let graphData = { nodes: [], connections: [] };
 
 async function loadGraph() {
@@ -92,8 +110,33 @@ function renderGraph(data) {
             .on('end', dragEnd)
         )
         .on('click', (event, d) => {
-            openModal(d, data.nodes, data.connections);
-        })
+    if (connectMode) {
+        if (!connectFirstNode) {
+            connectFirstNode = d;
+            document.getElementById('connect-status').textContent = `"${d.title}" selected — now click second node...`;
+        } else {
+            const label = prompt(`Relationship from "${connectFirstNode.title}" to "${d.title}":`, 'related to');
+            if (label) {
+                fetch('/api/connections', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        from_node_id: connectFirstNode.id,
+                        to_node_id: d.id,
+                        label
+                    })
+                }).then(() => {
+                    loadGraph();
+                    loadHeatmap();
+                });
+            }
+            connectFirstNode = null;
+            toggleConnectMode();
+        }
+        return;
+    }
+    openModal(d, data.nodes, data.connections);
+})
         .on('mouseover', function(event, d) {
             // Dim all
             nodeGroup.selectAll('circle').attr('opacity', 0.15);

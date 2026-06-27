@@ -28,7 +28,7 @@ function openModal(node, allNodes, allConnections) {
 
     const connected = connectedNodes.map(({ node: n, label }) =>
         `<span class="connected-node" onclick="fetchAndOpenNode('${n.id}')">${label} → ${n.title}</span>`
-    ).join('') || '<span style="color:#6b6560">No connections</span>';
+    ).join('') || '<span style="color:#6b6560">No connections yet.</span>';
 
     document.getElementById('modal-body').innerHTML = `
         <div class="modal-title">${node.title}</div>
@@ -54,7 +54,6 @@ function openModal(node, allNodes, allConnections) {
     `;
 
     document.getElementById('modal').classList.remove('hidden');
-
     fetch(`/api/nodes/${node.id}`);
 }
 
@@ -69,10 +68,46 @@ async function fetchAndOpenNode(nodeId) {
     if (node) openModal(node, data.nodes, data.connections);
 }
 
-// ── DELETE NODE ──
-async function deleteNode(nodeId) {
-    if (!confirm('Delete this node?')) return;
-    await fetch(`/api/nodes/${nodeId}`, { method: 'DELETE' });
+// ── ADD NODE FORM ──
+function openAddNodeForm() {
+    document.getElementById('modal-body').innerHTML = `
+        <div class="modal-title">New Node</div>
+        <div style="display:flex;flex-direction:column;gap:16px;margin-top:24px">
+            <input id="fn-title" placeholder="Title *" style="${inputStyle()}" />
+            <input id="fn-domain" placeholder="Domain *" style="${inputStyle()}" />
+            <textarea id="fn-content" placeholder="Notes..." style="${inputStyle()}height:100px;resize:none;"></textarea>
+            <input id="fn-tags" placeholder="Tags (comma separated)" style="${inputStyle()}" />
+            <input id="fn-sources" placeholder="Sources / URLs (comma separated)" style="${inputStyle()}" />
+            <div style="display:flex;gap:12px;margin-top:8px">
+                <button class="btn-edit" onclick="submitNewNode()">CREATE</button>
+                <button class="btn-delete" onclick="closeModal()">CANCEL</button>
+            </div>
+        </div>
+    `;
+    document.getElementById('modal').classList.remove('hidden');
+}
+
+function inputStyle() {
+    return `width:100%;background:#0d0d0d;border:1px solid #2a2a2a;color:#e8e0d0;font-family:'Share Tech Mono',monospace;font-size:13px;padding:10px 14px;outline:none;`;
+}
+
+async function submitNewNode() {
+    const title = document.getElementById('fn-title').value.trim();
+    const domain = document.getElementById('fn-domain').value.trim();
+    if (!title || !domain) {
+        alert('Title and Domain are required.');
+        return;
+    }
+    const content = document.getElementById('fn-content').value.trim();
+    const tags = document.getElementById('fn-tags').value.split(',').map(t => t.trim()).filter(Boolean);
+    const sources = document.getElementById('fn-sources').value.split(',').map(s => s.trim()).filter(Boolean);
+
+    await fetch('/api/nodes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, domain, content, tags, sources })
+    });
+
     closeModal();
     loadGraph();
     loadHeatmap();
@@ -81,7 +116,6 @@ async function deleteNode(nodeId) {
 // ── EDIT NODE ──
 function editNode(nodeId) {
     closeModal();
-    // For now open a prompt-based edit — full form in next step
     fetchAndEditNode(nodeId);
 }
 
@@ -89,24 +123,46 @@ async function fetchAndEditNode(nodeId) {
     const res = await fetch(`/api/nodes/${nodeId}`);
     const node = await res.json();
 
-    const title = prompt('Title:', node.title);
-    if (!title) return;
-    const domain = prompt('Domain:', node.domain);
-    const content = prompt('Content:', node.content);
-    const tags = prompt('Tags (comma separated):', node.tags.join(', '));
+    document.getElementById('modal-body').innerHTML = `
+        <div class="modal-title">Edit Node</div>
+        <div style="display:flex;flex-direction:column;gap:16px;margin-top:24px">
+            <input id="en-title" value="${node.title}" style="${inputStyle()}" />
+            <input id="en-domain" value="${node.domain}" style="${inputStyle()}" />
+            <textarea id="en-content" style="${inputStyle()}height:100px;resize:none;">${node.content}</textarea>
+            <input id="en-tags" value="${node.tags.join(', ')}" style="${inputStyle()}" />
+            <input id="en-sources" value="${node.sources.join(', ')}" style="${inputStyle()}" />
+            <div style="display:flex;gap:12px;margin-top:8px">
+                <button class="btn-edit" onclick="submitEditNode('${node.id}')">SAVE</button>
+                <button class="btn-delete" onclick="closeModal()">CANCEL</button>
+            </div>
+        </div>
+    `;
+    document.getElementById('modal').classList.remove('hidden');
+}
+
+async function submitEditNode(nodeId) {
+    const title = document.getElementById('en-title').value.trim();
+    const domain = document.getElementById('en-domain').value.trim();
+    const content = document.getElementById('en-content').value.trim();
+    const tags = document.getElementById('en-tags').value.split(',').map(t => t.trim()).filter(Boolean);
+    const sources = document.getElementById('en-sources').value.split(',').map(s => s.trim()).filter(Boolean);
 
     await fetch(`/api/nodes/${nodeId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            title,
-            domain,
-            content,
-            tags: tags.split(',').map(t => t.trim()).filter(Boolean),
-            sources: node.sources,
-        })
+        body: JSON.stringify({ title, domain, content, tags, sources })
     });
 
+    closeModal();
+    loadGraph();
+    loadHeatmap();
+}
+
+// ── DELETE NODE ──
+async function deleteNode(nodeId) {
+    if (!confirm('Delete this node?')) return;
+    await fetch(`/api/nodes/${nodeId}`, { method: 'DELETE' });
+    closeModal();
     loadGraph();
     loadHeatmap();
 }
