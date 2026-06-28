@@ -18,7 +18,7 @@ function openModal(node, allNodes, allConnections) {
     const connectedNodes = connections.map(c => {
         const otherId = c.from_node_id === node.id ? c.to_node_id : c.from_node_id;
         const other = allNodes.find(n => n.id === otherId);
-        return { node: other, label: c.label };
+        return { node: other, label: c.label, connId: c.id };
     }).filter(x => x.node);
 
     const tags = node.tags.map(t => `<span class="tag">${t}</span>`).join('');
@@ -26,10 +26,12 @@ function openModal(node, allNodes, allConnections) {
         `<a class="source-link" href="${s}" target="_blank">${s}</a>`
     ).join('') || '<span style="color:#6b6560">None</span>';
 
-    const connected = connectedNodes.map(({ node: n, label }) =>
-        `<span class="connected-node" onclick="fetchAndOpenNode('${n.id}')">${label} → ${n.title}</span>`
+   const connected = connectedNodes.map(({ node: n, label, connId }) =>
+        `<div style="display:flex;align-items:center;gap:8px;margin:4px 0;">
+            <span class="connected-node" onclick="fetchAndOpenNode('${n.id}')">${label} → ${n.title}</span>
+            <button onclick="deleteConnection('${connId}')" style="background:transparent;border:none;color:#ff4444;cursor:pointer;font-size:14px;">✕</button>
+        </div>`
     ).join('') || '<span style="color:#6b6560">No connections yet.</span>';
-
     document.getElementById('modal-body').innerHTML = `
         <div class="modal-title">${node.title}</div>
         <div class="modal-domain">${node.domain}</div>
@@ -317,4 +319,11 @@ async function logToday() {
     });
 
     loadTracker();
+}
+async function deleteConnection(connId) {
+    if (!confirm('Delete this connection?')) return;
+    await fetch(`/api/connections/${connId}`, { method: 'DELETE' });
+    closeModal();
+    loadGraph();
+    loadHeatmap();
 }
