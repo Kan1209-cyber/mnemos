@@ -36,6 +36,20 @@
       "sources": [],
       "created_at": "2026-06-28T01:25:49.563771",
       "last_visited": "2026-06-28T01:45:27.970603"
+    },
+    "ee25768b-fc56-4dc5-86ef-c4e954dd2b50": {
+      "id": "ee25768b-fc56-4dc5-86ef-c4e954dd2b50",
+      "title": "44",
+      "domain": "e",
+      "content": "r",
+      "tags": [
+        "2r"
+      ],
+      "sources": [
+        "3r"
+      ],
+      "created_at": "2026-06-28T02:35:59.504534",
+      "last_visited": "2026-06-28T02:35:59.504550"
     }
   },
   "connections": {
@@ -52,6 +66,13 @@
       "to_node_id": "6093583d-83dd-40de-a8bd-05a68fd9d2e7",
       "label": "is part of",
       "created_at": "2026-06-28T01:26:44.594581"
+    },
+    "d0d8778e-b290-4b02-8034-bba143b1c816": {
+      "id": "d0d8778e-b290-4b02-8034-bba143b1c816",
+      "from_node_id": "ee25768b-fc56-4dc5-86ef-c4e954dd2b50",
+      "to_node_id": "73a07b13-9fb0-467f-862e-bff2740e9cef",
+      "label": "related to",
+      "created_at": "2026-06-28T02:36:11.651088"
     }
   }
 }

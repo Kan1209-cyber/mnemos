@@ -1,9 +1,9 @@
 // ── PAGE NAVIGATION ──
-function showPage(name) {
+function showPage(name, btn) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('page-' + name).classList.add('active');
-    event.target.classList.add('active');
+    btn.classList.add('active');
 
     if (name === 'tracker') loadTracker();
     if (name === 'search') document.getElementById('search-input').focus();
@@ -180,24 +180,26 @@ async function randomNode() {
 // ── THOUGHT CAPTURE ──
 document.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById('thought-input');
-    input.addEventListener('keydown', async (e) => {
-        if (e.key !== 'Enter') return;
-        const val = input.value.trim();
-        if (!val) return;
+    if (input) {
+        input.addEventListener('keydown', async (e) => {
+            if (e.key !== 'Enter') return;
+            const val = input.value.trim();
+            if (!val) return;
 
-        const domain = prompt('Domain for this thought:', 'General');
-        if (!domain) return;
+            const domain = prompt('Domain for this thought:', 'General');
+            if (!domain) return;
 
-        await fetch('/api/nodes', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title: val, domain })
+            await fetch('/api/nodes', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title: val, domain })
+            });
+
+            input.value = '';
+            loadGraph();
+            loadHeatmap();
         });
-
-        input.value = '';
-        loadGraph();
-        loadHeatmap();
-    });
+    }
 
     loadGraph();
     loadHeatmap();

@@ -15,9 +15,9 @@
             <div id="logo">MNEMOS</div>
 
             <nav>
-                <button class="nav-btn active" onclick="showPage('graph')">Graph</button>
-                <button class="nav-btn" onclick="showPage('search')">Search</button>
-                <button class="nav-btn" onclick="showPage('tracker')">Tracker</button>
+                <button class="nav-btn active" onclick="showPage('graph', this)">Graph</button>
+                <button class="nav-btn" onclick="showPage('search', this)">Search</button>
+                <button class="nav-btn" onclick="showPage('tracker', this)">Tracker</button>
             </nav>
 
             <div id="heatmap-section">
@@ -39,11 +39,14 @@
                     <svg id="graph-svg"></svg>
                 </div>
                 <div id="toolbar">
-    <button id="add-node-btn" onclick="openAddNodeForm()">+ Add Node</button>
-    <button id="connect-btn" onclick="toggleConnectMode()">⟵ Connect Nodes</button>
-    <span id="connect-status"></span>
-</div>
-<div id="thought-capture">
+                    <button id="add-node-btn" onclick="openAddNodeForm()">+ Add Node</button>
+                    <button id="connect-btn" onclick="toggleConnectMode()">⟵ Connect Nodes</button>
+                    <span id="connect-status"></span>
+                </div>
+                <div id="thought-capture">
+                    <input type="text" id="thought-input" placeholder="Capture a thought... (press Enter)" />
+                </div>
+            </div>
 
             <!-- SEARCH PAGE -->
             <div id="page-search" class="page">
